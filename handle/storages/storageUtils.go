@@ -2,12 +2,10 @@ package storages
 
 import (
 	"github.com/duke-git/lancet/v2/netutil"
-	"github.com/duke-git/lancet/v2/slice"
 	"github.com/g-mero/gotutu/handle/imgHandle"
 	"github.com/g-mero/gotutu/utils/config"
 	"net/url"
 	path2 "path"
-	"strings"
 )
 
 // StorageMethod 存储的基本接口
@@ -42,15 +40,6 @@ func MakeImgUrl(path string) (imgUrl ImageUrl) {
 	imgUrl.Path = path2.Clean(path)
 
 	return imgUrl
-}
-
-// IsImgPath 判断路径是否是图片
-func IsImgPath(path string) bool {
-	ext := strings.ToLower(path2.Ext(path))
-
-	allowExt := []string{".webp", ".gif", ".png", ".jpg", "bmp"}
-
-	return slice.Contain(allowExt, ext)
 }
 
 // GetFileNameFromPath 获取路径中图片的文件名
