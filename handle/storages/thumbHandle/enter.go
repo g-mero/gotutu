@@ -19,11 +19,12 @@ type ThumbStorageMethod interface {
 	IsThumbPath(webPath string) bool
 }
 
-// ThumbStorageRegister 原始图片容器注册
+// ThumbStorageRegister 缩略图容器注册
 var ThumbStorageRegister = map[string]ThumbStorageMethod{
 	"local":       ThumbLocal{},
 	"local_cache": ThumbLocalCache{},
 	"alist":       ThumbAlist{},
+	"upyun":       UpyunThumb{},
 }
 
 var ErrorThumbNotExist = errors.New("缩略图文件未找到")
