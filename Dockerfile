@@ -1,7 +1,10 @@
-FROM golang:1.20-bookworm as builder
+FROM golang:1.20-bullseye as builder
 
 ARG IMG_PATH=/opt/pics
 ARG EXHAUST_PATH=/opt/exhaust
+
+RUN sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
+RUN sed -i 's/security.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 RUN apt update && apt install --no-install-recommends libvips-dev -y && mkdir /build
 COPY go.mod /build
 RUN cd /build && go mod download
@@ -10,12 +13,13 @@ COPY . /build
 RUN cd /build \
     && go build -ldflags="-s -w" -o gotutu .
 
-FROM debian:bookworm-slim
+FROM debian:bullseye-slim
 
+RUN sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
+RUN sed -i 's/security.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 RUN apt update && apt install --no-install-recommends libvips ca-certificates libjemalloc2 libtcmalloc-minimal4 -y && rm -rf /var/lib/apt/lists/* &&  rm -rf /var/cache/apt/archives/*
 
 COPY --from=builder /build/gotutu    /opt/gotutu
-COPY --from=builder /build/data   /opt/data
 
 WORKDIR /opt
 VOLUME /opt/data
