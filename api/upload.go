@@ -49,7 +49,8 @@ func (a UploadApi) Upload(c *fiber.Ctx) error {
 
 	if err = thumbStorage.SaveThumbnail(img, imgUrl.Path); err != nil {
 		log.Println("[SaveThumbnail]保存缩略图出错： ", err)
+		return fiberResp.Warn(c, "图片上传成功但是缩略图保存出现了问题："+err.Error(), imgUrl)
 	}
 
-	return fiberResp.OkWithData(c, imgUrl)
+	return fiberResp.Ok(c, imgUrl)
 }

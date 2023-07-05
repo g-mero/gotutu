@@ -5,18 +5,15 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func Error(c *fiber.Ctx) error {
-	code := errmsg.ERROR
-	return c.JSON(fiber.Map{
-		"code":    code,
-		"message": errmsg.GetErrMsg(code),
-	})
-}
+func Error(c *fiber.Ctx, code ...int) error {
+	codeHere := errmsg.ERROR
 
-func ErrorCode(c *fiber.Ctx, code int) error {
+	if len(code) > 0 {
+		codeHere = code[0]
+	}
 	return c.JSON(fiber.Map{
-		"code":    code,
-		"message": errmsg.GetErrMsg(code),
+		"code":    codeHere,
+		"message": errmsg.GetErrMsg(codeHere),
 	})
 }
 
@@ -27,19 +24,28 @@ func ErrorMsg(c *fiber.Ctx, msg string) error {
 	})
 }
 
-func Ok(c *fiber.Ctx) error {
+func Ok(c *fiber.Ctx, data ...interface{}) error {
 	code := errmsg.SUCCESS
+
 	return c.JSON(fiber.Map{
 		"code":    code,
+		"data":    getFirstElementInSlice(data),
 		"message": errmsg.GetErrMsg(code),
 	})
 }
 
-func OkWithData(c *fiber.Ctx, data interface{}) error {
-	code := errmsg.SUCCESS
+func Warn(c *fiber.Ctx, msg string, data ...interface{}) error {
+
 	return c.JSON(fiber.Map{
-		"code":    code,
-		"data":    data,
-		"message": errmsg.GetErrMsg(code),
+		"code":    errmsg.Warning,
+		"data":    getFirstElementInSlice(data),
+		"message": msg,
 	})
+}
+
+func getFirstElementInSlice(data []interface{}) (el interface{}) {
+	if len(data) > 0 {
+		el = data[0]
+	}
+	return
 }
