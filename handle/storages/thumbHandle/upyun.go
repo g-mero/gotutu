@@ -1,3 +1,4 @@
+// Package thumbHandle 又拍云的缩略图容器
 package thumbHandle
 
 import (
@@ -39,13 +40,20 @@ func (that UpyunThumb) Init() ThumbStorageMethod {
 func (that UpyunThumb) SaveThumbnail(img *imgHandle.ImageG, webPath string) (err error) {
 	remoteDir := path.Clean(that.ThumbPath + "/" + path.Dir(webPath))
 
-	err = api.UploadImg(remoteDir, img)
+	var tinyImg *imgHandle.ImageG
+
+	tinyImg, err = img.MakeThumbnail()
+	if err != nil {
+		return
+	}
+
+	err = api.UploadImg(remoteDir, tinyImg)
 
 	return
 }
 
 func (that UpyunThumb) GetThumbnail(webPath string) (imgInfo storages.ImageInfo, err error) {
-	remotePath := path.Clean("/" + that.ThumbPath + "/" + webPath)
+	remotePath := path.Clean("/" + that.ThumbPath + "/" + imgHandle.ThumbnailName(webPath) + ".webp")
 
 	imgInfo.IsLocal = false
 	imgInfo.Path = that.CustomHost + remotePath
