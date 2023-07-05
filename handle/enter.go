@@ -11,6 +11,6 @@ var (
 )
 
 func InitStorages() {
-	thumbHandle.InitThumbStorage()
-	originHandle.InitOriginStorage()
+	ThumbStorage = thumbHandle.InitThumbStorage()
+	OriginStorage = originHandle.InitOriginStorage()
 }
