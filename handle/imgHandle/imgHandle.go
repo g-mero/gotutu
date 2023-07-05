@@ -112,6 +112,28 @@ func (that *ImageG) MakeThumbnail() (*ImageG, error) {
 	return thumbImg, nil
 }
 
-func ThumbnailFullName(originPath string) string {
-	return originPath[:len(originPath)-len(path2.Ext(originPath))] + "_small.webp"
+// Tiny 缩略图但保留原图片格式
+func (that *ImageG) Tiny() (*ImageG, error) {
+	tinyImg := new(ImageG)
+	img, err := imgEncoder.LoadImgFromBuffer(that.Buf)
+
+	if err != nil {
+		return nil, err
+	}
+
+	buf, err := img.Tiny(700, 800)
+	if err != nil {
+		return nil, err
+	}
+
+	tinyImg.Buf = buf
+	tinyImg.FileName = that.FileName + "_small"
+	tinyImg.ImageType = that.ImageType
+
+	return tinyImg, nil
+}
+
+// ThumbnailName 根据原始图片的路径，生成缩略图的路径，注意只有名字没有后缀
+func ThumbnailName(originPath string) string {
+	return originPath[:len(originPath)-len(path2.Ext(originPath))] + "_small"
 }

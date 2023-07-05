@@ -113,7 +113,7 @@ func (that Encoder) ToWebp() ([]byte, error) {
 	return resultBuf, nil
 }
 
-// Compress 压缩图片
+// Compress 压缩图片保证质量
 func (that Encoder) Compress() ([]byte, error) {
 	switch that.ImgType {
 	case ImgTypeJPEG:
@@ -127,4 +127,57 @@ func (that Encoder) Compress() ([]byte, error) {
 	default:
 		return nil, errors.New("不支持的图片格式")
 	}
+}
+
+// Tiny 压缩并限制长宽，大幅下降质量，尽可能的减小体积
+func (that Encoder) Tiny(maxW, maxH int) (buf []byte, err error) {
+	err = thumbNail(that.img, maxW, maxH)
+	if err != nil {
+		return nil, err
+	}
+	switch that.ImgType {
+	case ImgTypeJPEG:
+		buf, _, err = that.img.ExportJpeg(&vips.JpegExportParams{
+			StripMetadata:  true,
+			Quality:        10,
+			Interlace:      true,
+			OptimizeCoding: true,
+			// SubsampleMode:      0,
+			TrellisQuant:       true,
+			OvershootDeringing: true,
+			OptimizeScans:      true,
+			QuantTable:         3,
+		})
+	case ImgTypePng:
+		buf, _, err = that.img.ExportPng(&vips.PngExportParams{
+			StripMetadata: true,
+			Compression:   9, // 压缩等级 0 - 9
+			Filter:        vips.PngFilterNone,
+			Interlace:     false, // 交错, 会增大体积，但是浏览器体验好
+			Quality:       10,    // 优化程度，仅在palette开启时有效
+			Palette:       true,  // 调色板模式, 有效减小体积
+			// Dither:      0,
+			Bitdepth: 8, // 色深
+			// Profile:       "",
+		})
+	case ImgTypeGIF:
+		buf, _, err = that.img.ExportGIF(&vips.GifExportParams{
+			StripMetadata: true,
+			Quality:       10,
+			// Dither:        0,
+			Effort:   7,
+			Bitdepth: 8,
+		})
+	case ImgTypeWEBP:
+		buf, _, err = that.img.ExportWebp(&vips.WebpExportParams{
+			Quality:         10,
+			Lossless:        false,
+			StripMetadata:   true,
+			ReductionEffort: 4,
+		})
+	default:
+		return nil, errors.New("不支持的图片格式")
+	}
+
+	return
 }
