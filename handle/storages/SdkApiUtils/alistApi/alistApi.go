@@ -14,15 +14,15 @@ type AlistApi struct {
 	Host  string
 }
 
-type AlistApiImgInfo struct {
+type AlistImgInfo struct {
 	RawUrl string
 }
 
-func (that AlistApi) GetImgInfo(remotePath string) (AlistApiImgInfo, error) {
+func (that AlistApi) GetImgInfo(remotePath string) (AlistImgInfo, error) {
 	var (
 		err     error
 		apiUrl  = that.Host + "/api/fs/get"
-		imgInfo AlistApiImgInfo
+		imgInfo AlistImgInfo
 	)
 
 	resp, err := request.Post(apiUrl, map[string]string{"Authorization": that.Token}, fiber.Map{"path": remotePath})

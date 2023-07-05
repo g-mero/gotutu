@@ -54,7 +54,7 @@ func (that OriginAlist) SaveImg(img *imgHandle.ImageG) (storages.ImageUrl, error
 func (that OriginAlist) GetImg(webPath string) (storages.ImageInfo, error) {
 	var (
 		err          error
-		alistImgInfo alistApi.AlistApiImgInfo
+		alistImgInfo alistApi.AlistImgInfo
 		imgInfo      storages.ImageInfo
 	)
 	alistImgInfo, err = apiAlist.GetImgInfo(that.Path + "/" + webPath)
