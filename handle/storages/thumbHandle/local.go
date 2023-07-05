@@ -58,7 +58,7 @@ func (that ThumbLocal) GetThumbnail(webPath string) (storages.ImageInfo, error) 
 		imgInfo   storages.ImageInfo
 	)
 
-	thumbPath = path2.Clean(that.CachePath + "/" + imgHandle.ThumbnailFullName(webPath))
+	thumbPath = path2.Clean(that.CachePath + "/" + imgHandle.ThumbnailName(webPath) + ".webp")
 
 	_, err = os.Stat(thumbPath)
 

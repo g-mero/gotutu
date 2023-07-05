@@ -62,7 +62,7 @@ func (that ThumbAlist) GetThumbnail(webPath string) (storages.ImageInfo, error) 
 		imgInfo   storages.ImageInfo
 	)
 
-	thumbPath = path.Clean(that.CachePath + "/" + imgHandle.ThumbnailFullName(webPath))
+	thumbPath = path.Clean(that.CachePath + "/" + imgHandle.ThumbnailName(webPath) + ".webp")
 
 	alistImginfo, err := apiAlist.GetImgInfo(thumbPath)
 	if err != nil {
