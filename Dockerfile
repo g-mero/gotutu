@@ -1,8 +1,5 @@
 FROM golang:1.20-bullseye as builder
 
-ARG IMG_PATH=/opt/pics
-ARG EXHAUST_PATH=/opt/exhaust
-
 RUN sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 RUN sed -i 's/security.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 RUN apt update && apt install --no-install-recommends libvips-dev -y && mkdir /build
