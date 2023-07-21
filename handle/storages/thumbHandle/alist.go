@@ -64,13 +64,13 @@ func (that ThumbAlist) GetThumbnail(webPath string) (storages.ImageInfo, error) 
 
 	thumbPath = path.Clean(that.CachePath + "/" + imgHandle.ThumbnailName(webPath) + ".webp")
 
-	alistImginfo, err := apiAlist.GetImgInfo(thumbPath)
+	alistImgInfo, err := apiAlist.GetImgInfo(thumbPath)
 	if err != nil {
 		return imgInfo, err
 	}
 
 	imgInfo.IsLocal = false
-	imgInfo.Path = alistImginfo.RawUrl
+	imgInfo.Path = alistImgInfo.RawUrl
 
 	return imgInfo, nil
 }

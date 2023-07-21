@@ -6,6 +6,7 @@ import (
 	"github.com/g-mero/gotutu/utils/config"
 	"net/url"
 	path2 "path"
+	"time"
 )
 
 // StorageMethod 存储的基本接口
@@ -47,4 +48,11 @@ func GetFileNameFromPath(path string) string {
 	base := path2.Base(path)
 
 	return base[:len(base)-len(path2.Ext(base))]
+}
+
+// MakeDateDir 生成由 YYYY/MM/DD 组成的文件夹路径名
+func MakeDateDir() string {
+	now := time.Now()
+
+	return now.Format("2006/01/02")
 }

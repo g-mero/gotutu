@@ -1,13 +1,11 @@
 package originHandle
 
 import (
-	"fmt"
 	"github.com/g-mero/gotutu/handle/imgHandle"
 	"github.com/g-mero/gotutu/handle/storages"
 	"log"
 	"os"
 	path2 "path"
-	"time"
 )
 
 type OriginLocal struct {
@@ -45,11 +43,8 @@ func (that OriginLocal) SaveImg(img *imgHandle.ImageG) (storages.ImageUrl, error
 		err    error
 	)
 
-	dateDir := time.Now().Format("200601") + "/"
+	dateDir := storages.MakeDateDir()
 	baseDir := that.mkFileDir(dateDir)
-
-	// 生成图片名称
-	img.FileName = that.mkImgName()
 
 	// 保存原始图片到本地
 	err = os.WriteFile(baseDir+"/"+img.FullName(), img.Buf, 0644)
@@ -90,11 +85,4 @@ func (that OriginLocal) mkFileDir(path string) string {
 	}
 
 	return dir
-}
-
-// 生成一个图片名
-func (that OriginLocal) mkImgName() string {
-	timestamp := time.Now().Unix()
-	timestampStr := fmt.Sprintf("%d", timestamp)
-	return timestampStr
 }

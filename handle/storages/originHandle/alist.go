@@ -6,7 +6,6 @@ import (
 	"github.com/g-mero/gotutu/handle/storages/SdkApiUtils/alistApi"
 	"github.com/g-mero/gotutu/utils/config"
 	"github.com/g-mero/gotutu/utils/request"
-	"time"
 )
 
 type OriginAlist struct {
@@ -38,7 +37,7 @@ func (that OriginAlist) SaveImg(img *imgHandle.ImageG) (storages.ImageUrl, error
 		err    error
 	)
 
-	dir := time.Now().Format("20060102") + "/"
+	dir := storages.MakeDateDir()
 
 	// 保存原始图片
 	err = apiAlist.UploadImg(that.Path+"/"+dir, img)
