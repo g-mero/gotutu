@@ -39,3 +39,11 @@ func (that UpyunG) UploadImg(remoteDir string, img *imgHandle.ImageG) error {
 
 	return nil
 }
+
+// IsFileExist 判断文件是否存在
+func (that UpyunG) IsFileExist(remotePath string) bool {
+
+	_, err := that.core.GetInfo(remotePath)
+
+	return !upyun.IsNotExist(err)
+}

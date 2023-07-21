@@ -5,7 +5,9 @@ import (
 	"github.com/g-mero/gotutu/handle/imgHandle"
 	"github.com/g-mero/gotutu/handle/storages"
 	"github.com/g-mero/gotutu/handle/storages/SdkApiUtils/upyunSDK"
+	"github.com/g-mero/gotutu/utils/cache"
 	"github.com/g-mero/gotutu/utils/config"
+	"log"
 	"path"
 )
 
@@ -54,6 +56,13 @@ func (that UpyunThumb) SaveThumbnail(img *imgHandle.ImageG, webPath string) (err
 
 func (that UpyunThumb) GetThumbnail(webPath string) (imgInfo storages.ImageInfo, err error) {
 	remotePath := path.Clean("/" + that.ThumbPath + "/" + imgHandle.ThumbnailName(webPath) + ".webp")
+
+	if !cache.Has("upyunCache"+remotePath) && !api.IsFileExist(remotePath) {
+		cache.Set("upyunCache"+remotePath, nil)
+		log.Println("[upyun]缩略图 " + remotePath + " 不存在(此检查对每张缩略图只进行一次，重启后才会继续检查)")
+		err = ErrorThumbNotExist
+		return
+	}
 
 	imgInfo.IsLocal = false
 	imgInfo.Path = that.CustomHost + remotePath
