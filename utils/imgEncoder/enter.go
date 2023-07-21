@@ -139,7 +139,7 @@ func (that Encoder) Tiny(maxW, maxH int) (buf []byte, err error) {
 	case ImgTypeJPEG:
 		buf, _, err = that.img.ExportJpeg(&vips.JpegExportParams{
 			StripMetadata:  true,
-			Quality:        10,
+			Quality:        35,
 			Interlace:      true,
 			OptimizeCoding: true,
 			// SubsampleMode:      0,
@@ -154,7 +154,7 @@ func (that Encoder) Tiny(maxW, maxH int) (buf []byte, err error) {
 			Compression:   9, // 压缩等级 0 - 9
 			Filter:        vips.PngFilterNone,
 			Interlace:     false, // 交错, 会增大体积，但是浏览器体验好
-			Quality:       10,    // 优化程度，仅在palette开启时有效
+			Quality:       35,    // 优化程度，仅在palette开启时有效
 			Palette:       true,  // 调色板模式, 有效减小体积
 			// Dither:      0,
 			Bitdepth: 8, // 色深
@@ -163,14 +163,14 @@ func (that Encoder) Tiny(maxW, maxH int) (buf []byte, err error) {
 	case ImgTypeGIF:
 		buf, _, err = that.img.ExportGIF(&vips.GifExportParams{
 			StripMetadata: true,
-			Quality:       10,
+			Quality:       35,
 			// Dither:        0,
 			Effort:   7,
 			Bitdepth: 8,
 		})
 	case ImgTypeWEBP:
 		buf, _, err = that.img.ExportWebp(&vips.WebpExportParams{
-			Quality:         10,
+			Quality:         35,
 			Lossless:        false,
 			StripMetadata:   true,
 			ReductionEffort: 4,
