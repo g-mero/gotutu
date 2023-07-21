@@ -1,5 +1,5 @@
 // Package thumbHandle 将缩略图保存到本地缓存及内存中
-// 默认会申请32mb的内存作为cache(理论可存储2000张缩略图，用完之后也会自动清理最早存入的图片)
+// 默认会申请32mb的内存作为cache(理论可存储1000张缩略图，用完之后也会自动清理最早存入的图片)
 package thumbHandle
 
 import (
