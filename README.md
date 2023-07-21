@@ -5,7 +5,7 @@ docker run -d --name gotutu -p 3095:3095 \
 --add-host="host.docker.internal:host-gateway" \
 --restart on-failure:5 \
 -v [你的本地路径]:/opt/data \
-gmeroo/gotutu:0.0.1
+gmeroo/gotutu:latest
 ```
 
 注意这里的 `--add-host` 只需在linux系统下添加，mac或者windows系统无需添加该指令
