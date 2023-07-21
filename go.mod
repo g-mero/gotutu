@@ -7,6 +7,7 @@ require (
 	github.com/davidbyttow/govips/v2 v2.13.0
 	github.com/duke-git/lancet/v2 v2.2.2
 	github.com/gofiber/fiber/v2 v2.47.0
+	github.com/upyun/go-sdk/v3 v3.0.4
 	gopkg.in/ini.v1 v1.67.0
 )
 
@@ -25,7 +26,6 @@ require (
 	github.com/savsgio/gotils v0.0.0-20230208104028-c358bd845dee // indirect
 	github.com/stretchr/testify v1.7.0 // indirect
 	github.com/tinylib/msgp v1.1.8 // indirect
-	github.com/upyun/go-sdk/v3 v3.0.4 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.48.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
