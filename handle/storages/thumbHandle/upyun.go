@@ -59,7 +59,7 @@ func (that UpyunThumb) GetThumbnail(webPath string) (imgInfo storages.ImageInfo,
 
 	if !cache.Has("upyunCache"+remotePath) && !api.IsFileExist(remotePath) {
 		cache.Set("upyunCache"+remotePath, nil)
-		log.Println("[upyun]缩略图 " + remotePath + " 不存在(此检查对每张缩略图只进行一次，重启后才会继续检查)")
+		log.Println("[upyun]缩略图 " + remotePath + " 不存在(此检查对每张不存在的缩略图只进行一次，重启后才会继续检查)")
 		err = ErrorThumbNotExist
 		return
 	}
