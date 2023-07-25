@@ -14,6 +14,7 @@ type ThumbStorageMethod interface {
 	SaveThumbnail(img *imgHandle.ImageG, webPath string) error
 	// GetThumbnail 获取缩略图
 	// webPath 网络请求的路径 eg: 202307/3424235236.png
+	// 返回 ErrorThumbNotExist 代表不存在，程序将重新生成缩略图并保存
 	GetThumbnail(webPath string) (storages.ImageInfo, error)
 	// IsThumbPath 判读webPath是否是缩略图
 	IsThumbPath(webPath string) bool

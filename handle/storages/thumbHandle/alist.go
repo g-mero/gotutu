@@ -6,6 +6,7 @@ import (
 	"github.com/g-mero/gotutu/handle/storages/SdkApiUtils/alistApi"
 	"github.com/g-mero/gotutu/utils/config"
 	"path"
+	"strings"
 )
 
 type ThumbAlist struct {
@@ -66,6 +67,9 @@ func (that ThumbAlist) GetThumbnail(webPath string) (storages.ImageInfo, error) 
 
 	alistImgInfo, err := apiAlist.GetImgInfo(thumbPath)
 	if err != nil {
+		if strings.Contains(err.Error(), "object not found") {
+			return imgInfo, ErrorThumbNotExist
+		}
 		return imgInfo, err
 	}
 

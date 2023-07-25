@@ -3,7 +3,6 @@
 package thumbHandle
 
 import (
-	"errors"
 	"github.com/g-mero/gotutu/handle/imgHandle"
 	"github.com/g-mero/gotutu/handle/storages"
 	"github.com/g-mero/gotutu/utils/cache"
@@ -34,7 +33,7 @@ func (that ThumbLocalCache) GetThumbnail(webPath string) (storages.ImageInfo, er
 
 	buf := cache.Get(webPath)
 	if buf == nil {
-		return imgInfo, errors.New("缓存中没有找到")
+		return imgInfo, ErrorThumbNotExist
 	}
 
 	imgInfo.IsLocal = true

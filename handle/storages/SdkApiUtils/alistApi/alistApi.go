@@ -38,7 +38,8 @@ func (that AlistApi) GetImgInfo(remotePath string) (AlistImgInfo, error) {
 	}
 
 	if body["code"].(float64) != 200 {
-		return imgInfo, errors.New("上传失败: " + body["message"].(string))
+		msg := body["message"].(string)
+		return imgInfo, errors.New(msg)
 	}
 
 	imgInfo.RawUrl = body["data"].(map[string]interface{})["raw_url"].(string)
