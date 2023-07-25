@@ -100,7 +100,7 @@ func (that *ImageG) ContentType() string {
 // MakeThumbnail 生成缩略图
 func (that *ImageG) MakeThumbnail() (*ImageG, error) {
 	thumbImg := new(ImageG)
-	webp, err := imgEncoder.EncodeWebp(that.Buf, 35, 700, 800)
+	webp, err := imgEncoder.EncodeWebp(that.Buf, 35, 500, 550)
 	if err != nil {
 		return nil, err
 	}
@@ -121,7 +121,7 @@ func (that *ImageG) Tiny() (*ImageG, error) {
 		return nil, err
 	}
 
-	buf, err := img.Tiny(700, 800)
+	buf, err := img.Tiny(500, 550)
 	if err != nil {
 		return nil, err
 	}
