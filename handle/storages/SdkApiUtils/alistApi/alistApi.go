@@ -55,7 +55,7 @@ func (that AlistApi) UploadImg(remoteDir string, img *imgHandle.ImageG) error {
 	}
 
 	apiUrl := that.Host + "/api/fs/form"
-	res, err := request.Put(apiUrl, header, img.Buf)
+	res, err := request.Put(apiUrl, header, img.Data)
 	if err != nil {
 		return err
 	}

@@ -2,7 +2,7 @@ package imgHandle
 
 import (
 	"errors"
-	"github.com/g-mero/gotutu/utils/imgEncoder"
+	"github.com/g-mero/goimgp"
 	"io"
 	"mime/multipart"
 	path2 "path"
@@ -16,7 +16,8 @@ const (
 )
 
 type ImageG struct {
-	Buf       []byte // 图片的字节流数据
+	encoder   *goimgp.Encoder
+	Data      []byte
 	FileName  string // 图片的名称（不带后缀）
 	ImageType int    // 图片的类型
 }
@@ -31,36 +32,35 @@ func Open(file *multipart.FileHeader, compress ...bool) (*ImageG, error) {
 	if err != nil {
 		return that, err
 	}
-	that.Buf, err = io.ReadAll(data)
+	buf, err := io.ReadAll(data)
 	if err != nil {
 		return nil, err
 	}
 
 	that.FileName = file.Filename[:len(file.Filename)-len(path2.Ext(file.Filename))]
 
-	return OpenFromBuffer(that.Buf, that.FileName, compress...)
+	return OpenFromBuffer(buf, that.FileName, compress...)
 }
 
 func OpenFromBuffer(buf []byte, filename string, compress ...bool) (*ImageG, error) {
 	var that = new(ImageG)
+	var err error
 
-	that.Buf = buf
 	that.FileName = filename
-
-	encoder, err := imgEncoder.LoadImgFromBuffer(buf)
+	that.encoder, err = goimgp.LoadImgFromBuffer(buf)
 
 	if err != nil {
 		return nil, err
 	}
 
-	switch encoder.ImgType {
-	case imgEncoder.ImgTypeWEBP:
+	switch that.encoder.Format {
+	case goimgp.ImgTypeWEBP:
 		that.ImageType = Webp
-	case imgEncoder.ImgTypeGIF:
+	case goimgp.ImgTypeGIF:
 		that.ImageType = Gif
-	case imgEncoder.ImgTypeJPEG:
+	case goimgp.ImgTypeJPEG:
 		that.ImageType = Jpeg
-	case imgEncoder.ImgTypePng:
+	case goimgp.ImgTypePng:
 		that.ImageType = Png
 	default:
 		return nil, errors.New("不支持的图片格式")
@@ -68,7 +68,7 @@ func OpenFromBuffer(buf []byte, filename string, compress ...bool) (*ImageG, err
 
 	if len(compress) > 0 {
 		if compress[0] == true {
-			that.Buf, err = encoder.Compress()
+			that.Data, err = that.encoder.LossLess()
 		}
 	}
 
@@ -100,37 +100,18 @@ func (that *ImageG) ContentType() string {
 // MakeThumbnail 生成缩略图
 func (that *ImageG) MakeThumbnail() (*ImageG, error) {
 	thumbImg := new(ImageG)
-	webp, err := imgEncoder.EncodeWebp(that.Buf, 35, 500, 550)
+	webp, err := that.encoder.Tiny(700, 600)
 	if err != nil {
 		return nil, err
 	}
-
-	thumbImg.Buf = webp
+	thumbImg.encoder, err = goimgp.LoadImgFromBuffer(webp)
+	if err != nil {
+		return nil, err
+	}
+	thumbImg.Data = webp
 	thumbImg.FileName = that.FileName + "_small"
 	thumbImg.ImageType = Webp
-
 	return thumbImg, nil
-}
-
-// Tiny 缩略图但保留原图片格式
-func (that *ImageG) Tiny() (*ImageG, error) {
-	tinyImg := new(ImageG)
-	img, err := imgEncoder.LoadImgFromBuffer(that.Buf)
-
-	if err != nil {
-		return nil, err
-	}
-
-	buf, err := img.Tiny(500, 550)
-	if err != nil {
-		return nil, err
-	}
-
-	tinyImg.Buf = buf
-	tinyImg.FileName = that.FileName + "_small"
-	tinyImg.ImageType = that.ImageType
-
-	return tinyImg, nil
 }
 
 // ThumbnailName 根据原始图片的路径，生成缩略图的路径，注意只有名字没有后缀

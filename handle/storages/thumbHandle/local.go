@@ -43,7 +43,7 @@ func (that ThumbLocal) SaveThumbnail(img *imgHandle.ImageG, webPath string) erro
 		return err
 	}
 
-	err = os.WriteFile(thumbDir+"/"+thumbnail.FullName(), thumbnail.Buf, 0644)
+	err = os.WriteFile(thumbDir+"/"+thumbnail.FullName(), thumbnail.Data, 0644)
 	if err != nil {
 		return err
 	}

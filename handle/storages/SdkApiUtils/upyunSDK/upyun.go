@@ -30,8 +30,8 @@ func (that UpyunG) UploadImg(remoteDir string, img *imgHandle.ImageG) error {
 
 	err = that.core.Put(&upyun.PutObjectConfig{
 		Path:    path.Clean(remoteDir + "/" + img.FullName()),
-		Reader:  bytes.NewReader(img.Buf),
-		Headers: map[string]string{"Content-Length": strconv.Itoa(len(img.Buf))},
+		Reader:  bytes.NewReader(img.Data),
+		Headers: map[string]string{"Content-Length": strconv.Itoa(len(img.Data))},
 	})
 	if err != nil {
 		return err

@@ -1,4 +1,4 @@
-package fiberResp
+package resp
 
 import (
 	"github.com/g-mero/gotutu/utils/errmsg"

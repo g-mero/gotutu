@@ -21,7 +21,7 @@ func (that ThumbLocalCache) SaveThumbnail(img *imgHandle.ImageG, webPath string)
 	if err != nil {
 		return err
 	}
-	cache.Set(webPath, thumbnail.Buf)
+	cache.Set(webPath, thumbnail.Data)
 
 	return nil
 }

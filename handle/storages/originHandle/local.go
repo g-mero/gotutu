@@ -47,7 +47,7 @@ func (that OriginLocal) SaveImg(img *imgHandle.ImageG) (storages.ImageUrl, error
 	baseDir := that.mkFileDir(dateDir)
 
 	// 保存原始图片到本地
-	err = os.WriteFile(baseDir+"/"+img.FullName(), img.Buf, 0644)
+	err = os.WriteFile(baseDir+"/"+img.FullName(), img.Data, 0644)
 	if err != nil {
 		return imgUrl, err
 	}
