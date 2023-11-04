@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "name": "hexo-theme-justy-backend-go",
+  "builds": [
+    {
+      "src": "./main.go",
+      "use": "@vercel/go",
+      "config": { "maxLambdaSize": "15mb" }
+    }
+  ]
+}

@@ -17,6 +17,7 @@ func InitRouter() {
 
 	api := app.Group("api").Use(middleware.Auth)
 
+	app.Handler()
 	apiRoutes.RoutesApp.Init(api)
 	log.Fatal(app.Listen(":3095"))
 }
